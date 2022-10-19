@@ -5,6 +5,8 @@ gradlew
 gradlew.bat
 settings.gradle
 gradle/*
+.class/*
+out/*
 
 # Ignore Gradle GUI config
 gradle-app.setting
