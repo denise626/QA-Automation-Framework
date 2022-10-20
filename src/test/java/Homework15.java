@@ -4,19 +4,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
 
-
 public class Homework15{
-
     @Test
 
     public static void SearchSong () throws InterruptedException {
 
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
         String url = "https://bbb.testpro.io/";
         driver.get(url);
 
@@ -38,8 +34,8 @@ public class Homework15{
         searchBar.click();
         searchBar.sendKeys("Pluto");
 
-        WebElement songPluto = driver.findElement(By.cssSelector("[id = 'text']"));
-        Assert.assertTrue(songPluto.isDisplayed());
+       WebElement songPluto = driver.findElement(By.cssSelector("ul > article"));
+       Assert.assertTrue(songPluto.isDisplayed());
         Thread.sleep(5000);
         driver.quit();
     }
