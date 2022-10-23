@@ -14,7 +14,7 @@ public class Homework17 extends BaseTest {
         provideEmailAddress();
         providePassword();
         clickSubmitButton();
-        quitBrowser();
+        getDriver();
 
         WebElement allSongs = driver.findElement(By.cssSelector("a[href='#!/songs']"));
         allSongs.click();
@@ -31,9 +31,6 @@ public class Homework17 extends BaseTest {
         Assert.assertTrue(addToPlaylist.isDisplayed());
 
         Thread.sleep(5000);
-
-
-
     }
 }
 
