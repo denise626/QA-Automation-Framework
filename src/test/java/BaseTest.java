@@ -29,6 +29,7 @@ public class BaseTest {
     }
     public void clickSubmitBtn() {
         WebElement submitButton = driver.findElement(By.cssSelector("[type = 'submit']"));
+        submitButton.click();
     }
     public void provideEmail(String email) {
         WebElement emailField = driver.findElement(By.cssSelector("[type = 'email']"));
