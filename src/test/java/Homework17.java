@@ -1,15 +1,18 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+
 
 public class Homework17 extends BaseTest {
 
     @Test
 
     public void addSongToPlaylist() throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
 
         provideEmailAddress();
         providePassword();
@@ -32,6 +35,8 @@ public class Homework17 extends BaseTest {
 
         Thread.sleep(5000);
     }
+
+
 }
 
 
