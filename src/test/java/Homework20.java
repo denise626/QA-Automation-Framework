@@ -16,8 +16,8 @@ public class Homework20 extends BaseTest {
         providePassword("te$t$tudent");
         clickSubmitBtn();
 
-        WebElement choosePlaylist = driver.findElement(By.cssSelector("[href = '#!/playlist/17356']"));
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[href = '#!/playlist/17356']"))).click();
+        WebElement choosePlaylist = driver.findElement(By.xpath("//li[@class = 'playlist playlist'][2]//a[@class ='active']"));
+        wait.until(ExpectedConditions.elementToBeClickable(choosePlaylist)).click();
         WebElement deleteSongPlaylist = driver.findElement(By.xpath("//button[@title='Delete this playlist']"));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Delete this playlist']"))).click();
 

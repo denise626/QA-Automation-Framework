@@ -45,7 +45,7 @@ public class BaseTest {
 
     public void providePassword(String password) {
         WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[type = 'password']")));
-        passwordField.sendKeys("te$t$tudent");
+        passwordField.sendKeys(password);
     }
     @DataProvider(name ="invalidCredentials")
     public static Object[][] getCredentials() {
