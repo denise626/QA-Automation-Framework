@@ -16,11 +16,12 @@ public class Homework21 extends BaseTest {
         editPlaylist();
         inputNewPlaylistName();
         doesNewPlaylistExist();
+
     }
     public void contextClickPlaylist() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#playlists > ul > li:nth-child(3) > a")));
         WebElement webElement = driver.findElement(By.cssSelector("#playlists > ul > li:nth-child(3) > a"));
-        actions.contextClick(webElement).perform();
+        actions.doubleClick(webElement).perform();
     }
     public void editPlaylist() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#playlists > ul > li:nth-child(3) > nav > ul > li:nth-child(1)")));
@@ -32,7 +33,7 @@ public class Homework21 extends BaseTest {
         playlistInputField.sendKeys(Keys.ENTER);
     }
     public boolean doesNewPlaylistExist() {
-        WebElement newPlaylistElement = driver.findElement(By.xpath("//a[text = 'April's New and Edited Playlist']"));
+        WebElement newPlaylistElement = driver.findElement(By.xpath("//a[contains(text(), = 'Edited Playlist')]"));
         return newPlaylistElement.isDisplayed();
     }
 }
