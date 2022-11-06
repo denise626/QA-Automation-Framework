@@ -3,10 +3,12 @@
 
 <suite name="TestNG">
 
-    <test name="Example Test" preserve-order="false">
+    <test name="Homework22" preserve-order="false">
         <classes>
             <class name="LoginTests"/>
-            <class name="BaseTest"/>
+            <class name="POM.pages.BasePage"/>
+            <class name="POM.pages.HomePage"/>
+            <class name="POM.pages.LoginPage"/>
         </classes>
     </test>
 </suite>
