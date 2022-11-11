@@ -1,24 +1,24 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import POM.pages.HomePage;
+import POM.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
-
-public class LoginTests {
+public class LoginTests extends BaseTest {
 
     @Test
-    public static void LoginEmptyEmailPasswordTest () {
-
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-
-        String url = "https://bbb.testpro.io/";
-        driver.get(url);
-        Assert.assertEquals(driver.getCurrentUrl(), url);
-        driver.quit();
+    public void LoginEmptyEmailPasswordTest() {
+        String expectedResultUrl = "https://bbb.testpro.io/";
+        Assert.assertEquals(driver.getCurrentUrl(), expectedResultUrl);
     }
 
+    @Test
+    public void LoginValidEmailPasswordTest() {
+        LoginPage loginPage = new LoginPage(driver);
+        HomePage homePage = new HomePage(driver);
 
+        loginPage.login();
+
+        Assert.assertTrue(homePage.isUserAvatarDisplayed());
+    }
 
 }
