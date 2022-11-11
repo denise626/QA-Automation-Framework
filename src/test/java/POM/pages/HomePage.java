@@ -13,8 +13,7 @@ public class HomePage extends BasePage {
         super(givenDriver);
     }
     public boolean isUserAvatarDisplayed() {
-        //return driver.findElement(avatarLocator).isDisplayed();
-        avatarLocator.isDisplayed();
-        return this.isUserAvatarDisplayed();
+        waitForVisibilityOfElement(avatarLocator);
+        return avatarLocator.isDisplayed();
     }
 }

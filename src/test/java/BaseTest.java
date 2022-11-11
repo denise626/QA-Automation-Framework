@@ -1,13 +1,10 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.openqa.selenium.safari.SafariDriver;
+import org.testng.annotations.*;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -15,40 +12,55 @@ import java.net.URI;
 public class BaseTest {
 
     WebDriver driver;
-    Actions actions;
+    String url;
 
     @BeforeSuite
     public static void chromeConfigs() {
-        // This is for Windows users
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         }
     }
+
+    @BeforeMethod
     @Parameters({"baseURL"})
-    private void launchBrowser(@Optional String baseURL) throws MalformedURLException {
-            if (baseURL == null)
-                baseURL = "https://bbb.testpro.io";
-            System.setProperty("webdriver.gecko.driver", "geckodriver");
-            driver = pickBrowser(System.getProperty("browser"));
-            actions = new Actions(driver);
+    public void launchBrowser(@Optional String baseURL) throws MalformedURLException {
+        if (baseURL == null) {
+            baseURL = "https://bbb.testpro.io";
         }
+        driver = pickBrowser("browser");
+        url = baseURL;
+        driver.get(url);
+
+    }
+
+    @AfterMethod
+    public void tearDownBrowser() {
+        driver.quit();
+    }
+
+
     private WebDriver pickBrowser(String browser) throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
-        String gridURL = "http://192.168.1.4:4444";
-        switch (browser) {
+        String gridURL = "http://172.31.128.1:4444";
+        switch (browser){
             case "firefox":
-                System.setProperty("webdriver.gecko.driver", "geckodriver");
+                System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
                 return driver = new FirefoxDriver();
-            case "edge":
-                return driver = new EdgeDriver();
-            case "grid-edge":
-                caps.setCapability("browserName", "edge");
-                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
+            case "safari":
+                return driver = new SafariDriver();
+            case "grid-safari":
+                caps.setCapability("browserName", "safari");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(),caps);
+            case "grid-firefox":
+                caps.setCapability("browserName", "firefox");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(),caps);
+            case "grid-chrome":
+                caps.setCapability("browserName", "chrome");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(),caps);
             default:
                 return driver = new ChromeDriver();
         }
     }
-
 }
 
 
