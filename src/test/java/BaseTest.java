@@ -1,3 +1,7 @@
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.time.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -5,12 +9,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-import org.testng.annotations.*;
-
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.time.Duration;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 public class BaseTest {
 
@@ -29,15 +33,13 @@ public class BaseTest {
     @BeforeMethod
     @Parameters({"baseURL"})
     public static void launchBrowser(@Optional String baseURL) throws MalformedURLException {
+
         if (baseURL == null) {
             baseURL = "https://bbb.testpro.io";
         }
-
-        System.setProperty("webdriver.gecko.driver", "geckodriver");
-        driver = Lambdatest.pickBrowser(System.getProperty("browser"));
         threadDriver = new ThreadLocal<>();
+        driver = pickBrowser("firefox");
         threadDriver.set(driver);
-
         actions = new Actions(getDriver());
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         url = baseURL;
@@ -48,62 +50,60 @@ public class BaseTest {
         return threadDriver.get();
     }
 
-    public class Lambdatest {
+    public static WebDriver lambdaTest() throws MalformedURLException {
+        String username = "khaledzamanqa";
+        String authkey = "e33oiUgYlTNRArFJpW8NCYZmvEzDi9jIQC6qvdHg4UOxL82EHd";
+        String hub = "@hub.lambdatest.com/wd/hub";
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setCapability("platform", "MacOS Catalina");
+        caps.setCapability("resolution", "1440x900");
+        caps.setCapability("browserName", "Safari");
+        caps.setCapability("version", "13.0");
+        caps.setCapability("build", "TestNG With Java");
+        caps.setCapability("plugin", "git-testng");
+        return new RemoteWebDriver(new URL("https://" + username + ":" + authkey + hub), caps);
+    }
 
-        public static RemoteWebDriver driver = null;
-        String username = "kiser.denise1023";
-        String accessKey = "9bm8RIGFBUb8nsv7S3Go7hAQBfxEt3ic335cAzfsnC30rT1C0t";
+    public static WebDriver pickBrowser(String browser) throws MalformedURLException {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        String gridURL = "http://192.168.1.67:1234";
 
-        @BeforeTest
-        public void setUp() throws Exception {
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("browserName", "Chrome");
-            capabilities.setCapability("version", "107.0");
-            capabilities.setCapability("platform", "Windows 10");
-            capabilities.setCapability("resolution", "1024x768");
-            capabilities.setCapability("build", "First Test");
-            capabilities.setCapability("name", "Sample Test");
-            capabilities.setCapability("network", true); // To enable network logs
-            capabilities.setCapability("visual", true); // To enable step by step screenshot
-            capabilities.setCapability("video", true); // To enable video recording
-            capabilities.setCapability("console", true); // To capture console logs
-
-            try {
-                driver = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub.lambdatest.com/wd/hub"), capabilities);
-            } catch (MalformedURLException e) {
-                System.out.println("Invalid grid URL");
-            }
+        switch (browser) {
+            case "firefox":
+                System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
+                return driver = new FirefoxDriver();
+            case "safari":
+                return driver = new SafariDriver();
+            case "grid-firefox":
+                capabilities.setCapability("browserName", "firefox");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), capabilities);
+            case "grid-safari":
+                capabilities.setCapability("browserName", "safari");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), capabilities);
+            case "grid-chrome":
+                capabilities.setCapability("browserName", "chrome");
+                return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), capabilities);
+            case "cloud":
+                return lambdaTest();
+            default:
+                return driver = new ChromeDriver();
         }
 
-        public static WebDriver pickBrowser(String browser) throws MalformedURLException {
-            DesiredCapabilities caps = new DesiredCapabilities();
-            String gridURL = "http://172.31.128.1:4444";
-            switch (browser) {
-                case "firefox":
-                    System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
-                    return driver = new FirefoxDriver();
-                case "safari":
-                    return driver = new SafariDriver();
-                case "grid-safari":
-                    caps.setCapability("browserName", "safari");
-                    return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
-                case "grid-firefox":
-                    caps.setCapability("browserName", "firefox");
-                    return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
-                case "grid-chrome":
-                    caps.setCapability("browserName", "chrome");
-                    return driver = new RemoteWebDriver(URI.create(gridURL).toURL(), caps);
-                case "cloud":
-                    return lambdaTest();
-                default:
-                    return driver = new ChromeDriver();
-            }
-        }
+    }
 
-        @AfterMethod
-        public static void tearDownBrowser(WebDriver getDriver) {
-            getDriver.quit();
-            threadDriver.remove();
-        }
+    @DataProvider(name = "invalidCredentials")
+    public static Object[][] getCredentials() {
+        return new Object[][]{
+                {"invalid@class.com", "invalidPass"},
+                {"d@class.com", ""},
+                {"", ""}
+        };
+    }
+
+
+    @AfterMethod
+    public static void tearDownBrowser() {
+        getDriver().quit();
+        threadDriver.remove();
     }
 }
