@@ -10,7 +10,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 
 @CucumberOptions(
-        features = {"src/test/resources/features/Login.feature"})
+        features = {"src/test/resources/features/Login.feature", "src/test/resources/features/Create.feature",
+                "src/test/resources/features/Play.feature"})
 
 
 public class CucumberRunner extends AbstractTestNGCucumberTests {
