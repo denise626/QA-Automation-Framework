@@ -3,6 +3,7 @@ package POM.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HomePage extends BasePage {
     @FindBy(css = "img.avatar")
@@ -14,8 +15,11 @@ public class HomePage extends BasePage {
     }
     public boolean isUserAvatarDisplayed() {
         //return driver.findElement(avatarLocator).isDisplayed();
-        avatarLocator.isDisplayed();
-        return this.isUserAvatarDisplayed();
+        //avatarLocator.isDisplayed();
+        //return this.isUserAvatarDisplayed();
+        wait.until(ExpectedConditions.visibilityOf(avatarLocator));
+        return avatarLocator.isDisplayed();
+
     }
 }
 
