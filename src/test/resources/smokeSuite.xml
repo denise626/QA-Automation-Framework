@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="smokeSuite">
+    <test name="Koel Automation Tests" preserve-order="false">
+        <classes>
+            <class name="stepDefinition.CucumberRunner"/>
+            <class name="POM.pages.CreatingAPlaylist"/>
+            <class name="POM.pages.PlayingASong"/>
+        </classes>
+    </test>
+</suite>
