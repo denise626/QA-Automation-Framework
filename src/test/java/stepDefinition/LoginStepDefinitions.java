@@ -2,6 +2,7 @@ package stepDefinition;
 
 import POM.pages.HomePage;
 import POM.pages.LoginPage;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -17,18 +18,28 @@ import org.testng.Assert;
 
 import java.time.Duration;
 
+
 public class LoginStepDefinitions {
 
     WebDriver driver;
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+    WebDriverWait wait;
 
-    @Given("I open Browser")
+    @Before
+
     public void openBrowser() {
+
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+
         driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
     }
 
-    @And("I open Login Page")
+
+    @Given("I open Login Page")
     public void iOpenLoginPage() {
         driver.get("https://bbb.testpro.io");
     }
@@ -42,14 +53,19 @@ public class LoginStepDefinitions {
     public void enterPassword(String password) {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[type= 'password']"))).sendKeys(password);
     }
-
     @And("I submit")
     public void submit() {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[type= 'submit']"))).click();
     }
-
     @Then("I am logged in")
     public void userIsLoggedIn() {
         Assert.assertTrue(wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("img.avatar"))).isDisplayed());
     }
+    @After
+    public void closeBrowser() {
+        driver.quit();
+    }
+
+
+
 }

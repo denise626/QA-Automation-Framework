@@ -4,7 +4,7 @@
 <suite name="TestNG">
     <test name="Homework27" preserve-order="false">
         <classes>
-            <class name="CucumberRunner"/>
+            <class name="stepDefinition.CucumberRunner"/>
         </classes>
     </test>
 </suite>
