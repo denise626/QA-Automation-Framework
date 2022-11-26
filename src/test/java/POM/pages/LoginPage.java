@@ -32,3 +32,4 @@ public class LoginPage extends BasePage {
         provideEmail("denise626@hotmail.com").providePassword("te$t$tudent").clickSubmitBtn();
     }
 }
+
